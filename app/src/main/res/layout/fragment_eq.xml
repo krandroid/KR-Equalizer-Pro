@@ -23,7 +23,58 @@
             android:shadowDx="0"
             android:shadowDy="4"
             android:shadowRadius="8"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="24dp" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginBottom="24dp">
+            <LinearLayout
+                android:id="@+id/layout_presets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_flat"
+                    style="@style/ChipGold"
+                    android:layout_marginEnd="8dp"
+                    android:text="Flat"/>
+                    
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bass"
+                    style="@style/ChipGold"
+                    android:layout_marginEnd="8dp"
+                    android:text="Bass"/>
+                    
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_full_bass"
+                    style="@style/ChipGold"
+                    android:layout_marginEnd="8dp"
+                    android:text="Full Bass"/>
+                    
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bass_treble"
+                    style="@style/ChipGold"
+                    android:layout_marginEnd="8dp"
+                    android:text="Bass Treble"/>
+                    
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_vocal"
+                    style="@style/ChipGold"
+                    android:layout_marginEnd="8dp"
+                    android:text="Vocal"/>
+                    
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_headphones"
+                    style="@style/ChipGold"
+                    android:layout_marginEnd="8dp"
+                    android:text="Headphones"/>
+                    
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
