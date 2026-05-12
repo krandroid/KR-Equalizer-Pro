@@ -19,10 +19,6 @@
             android:textSize="36sp"
             android:textStyle="bold"
             android:layout_gravity="center"
-            android:shadowColor="@color/shadow"
-            android:shadowDx="0"
-            android:shadowDy="4"
-            android:shadowRadius="8"
             android:layout_marginBottom="24dp" />
 
         <HorizontalScrollView
@@ -30,100 +26,43 @@
             android:layout_height="wrap_content"
             android:scrollbars="none"
             android:layout_marginBottom="24dp">
-            <LinearLayout
+            <com.google.android.material.chip.ChipGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                app:singleSelection="true">
 
-                <Button
-                    android:id="@+id/btn_flat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="Flat"
-                    android:textColor="@color/gold"
-                    android:backgroundTint="@color/bg_card"
-                    android:layout_marginEnd="8dp"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_flat"
+                    style="@style/ChipGold"
+                    android:text="Flat" />
 
-                <Button
-                    android:id="@+id/btn_bass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="Bass"
-                    android:textColor="@color/gold"
-                    android:backgroundTint="@color/bg_card"
-                    android:layout_marginEnd="8dp"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bass"
+                    style="@style/ChipGold"
+                    android:text="Bass" />
 
-                <Button
-                    android:id="@+id/btn_full_bass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="Full Bass"
-                    android:textColor="@color/gold"
-                    android:backgroundTint="@color/bg_card"
-                    android:layout_marginEnd="8dp"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_full_bass"
+                    style="@style/ChipGold"
+                    android:text="Full Bass" />
 
-                <Button
-                    android:id="@+id/btn_bass_treble"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:text="Bass Treble"
-                    android:textColor="@color/gold"
-                    android:backgroundTint="@color/bg_card"
-                    android:layout_marginEnd="8dp"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bass_treble"
+                    style="@style/ChipGold"
+                    android:text="Bass Treble" />
 
-            </LinearLayout>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_vocal"
+                    style="@style/ChipGold"
+                    android:text="Vocal" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_headphones"
+                    style="@style/ChipGold"
+                    android:text="Headphones" />
+
+            </com.google.android.material.chip.ChipGroup>
         </HorizontalScrollView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardBackgroundColor="@color/bg_card"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <Switch
-                    android:id="@+id/switch_dolby"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:text="DOLBY SPREAD"
-                    android:textColor="@color/gold"
-                    android:thumbTint="@color/gold"
-                    android:trackTint="@color/gold_dark"
-                    android:textSize="18sp"/>
-
-                <LinearLayout
-                    android:id="@+id/layout_spread"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    android:layout_marginTop="12dp">
-                    <TextView
-                        android:id="@+id/txt_spread"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:text="SPREAD: 80"
-                        android:textColor="@color/gold" />
-                    <SeekBar
-                        android:id="@+id/seek_spread"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="100"
-                        android:progress="80"
-                        android:progressDrawable="@drawable/bg_slider_3d"
-                        android:thumb="@drawable/thumb_gold_3d"
-                        android:splitTrack="false"/>
-                </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
         <include layout="@layout/item_band" android:id="@+id/band_60"/>
         <include layout="@layout/item_band" android:id="@+id/band_230"/>
