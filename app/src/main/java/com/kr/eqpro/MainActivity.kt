@@ -1,6 +1,5 @@
 package com.kr.eqpro
 
-import android.content.Intent
 import android.media.audiofx.AudioEffect
 import android.media.audiofx.Equalizer
 import android.os.Bundle
@@ -20,10 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_eq)
 
-        // Android TV: Ambil session dari intent, jangan pake 0
         val sessionId = intent.getIntExtra(AudioEffect.EXTRA_AUDIO_SESSION, 0)
         val packageName = intent.getStringExtra(AudioEffect.EXTRA_PACKAGE_NAME)
-        val contentType = intent.getIntExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
 
         if (sessionId != 0) {
             try {
@@ -32,10 +29,10 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "EQ aktif untuk $packageName", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
                 Toast.makeText(this, "App ini ga support EQ eksternal", Toast.LENGTH_LONG).show()
-                finish() // Tutup aja kalo ga bisa
+                finish()
             }
         } else {
-            Toast.makeText(this, "Buka lewat Settings > Sound > Equalizer di app video/musik", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Buka lewat app musik: Settings > Equalizer", Toast.LENGTH_LONG).show()
             finish()
         }
 
