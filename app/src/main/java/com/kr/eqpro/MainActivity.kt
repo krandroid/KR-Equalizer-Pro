@@ -3,55 +3,34 @@ package com.kr.eqpro
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.media.audiofx.Equalizer
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.SeekBar
 import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.material.chip.Chip
 
 class MainActivity : AppCompatActivity() {
 
-    private var equalizer: Equalizer? = null
     private val bandViews = mutableListOf<View>()
+    private var serviceStarted = false
+
+    private val requestNotifPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) startEqService()
+        else Toast.makeText(this, "Service background dimatikan.", Toast.LENGTH_LONG).show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_eq)
-
-        // Minta permission notifikasi Android 13+
-        if (Build.VERSION.SDK_INT >= 33) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-               != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
-            }
-        }
-
-        // Cek Equalizer support, kalo gagal jangan crash
-        try {
-            equalizer = Equalizer(0, 0)
-            equalizer?.enabled = true
-        } catch (e: Exception) {
-            Toast.makeText(this, "HP ini block Global EQ. Coba pake app musik internal.", Toast.LENGTH_LONG).show()
-            e.printStackTrace()
-        }
-
-        // Start service cuma kalo Equalizer berhasil
-        if (equalizer!= null) {
-            val serviceIntent = Intent(this, EqService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(serviceIntent)
-            } else {
-                startService(serviceIntent)
-            }
-        }
+        checkNotifPermissionAndStartService()
 
         bandViews.add(findViewById(R.id.band_60))
         bandViews.add(findViewById(R.id.band_230))
@@ -85,13 +64,36 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun checkNotifPermissionAndStartService() {
+        if (Build.VERSION.SDK_INT >= 33) {
+            when {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED -> {
+                    startEqService()
+                }
+                else -> requestNotifPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        } else {
+            startEqService()
+        }
+    }
+
+    private fun startEqService() {
+        if (!serviceStarted) {
+            val serviceIntent = Intent(this, EqService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
+            }
+            serviceStarted = true
+        }
+    }
+
     private fun setupPresets() {
-        findViewById<Chip>(R.id.chip_flat).setOnClickListener { applyPreset(intArrayOf(0,0,0)) }
-        findViewById<Chip>(R.id.chip_bass).setOnClickListener { applyPreset(intArrayOf(8,6,0,-2,-4)) }
-        findViewById<Chip>(R.id.chip_full_bass).setOnClickListener { applyPreset(intArrayOf(12,9,3,0,-3)) }
-        findViewById<Chip>(R.id.chip_bass_treble).setOnClickListener { applyPreset(intArrayOf(7,3,0,3,7)) }
-        findViewById<Chip>(R.id.chip_vocal).setOnClickListener { applyPreset(intArrayOf(-2,2,6,4,0)) }
-        findViewById<Chip>(R.id.chip_headphones).setOnClickListener { applyPreset(intArrayOf(4,2,0,2,5)) }
+        findViewById<Button>(R.id.btn_flat).setOnClickListener { applyPreset(intArrayOf(0,0,0)) }
+        findViewById<Button>(R.id.btn_bass).setOnClickListener { applyPreset(intArrayOf(8,6,0,-2,-4)) }
+        findViewById<Button>(R.id.btn_full_bass).setOnClickListener { applyPreset(intArrayOf(12,9,3,0,-3)) }
+        findViewById<Button>(R.id.btn_bass_treble).setOnClickListener { applyPreset(intArrayOf(7,3,0,3,7)) }
     }
 
     private fun applyPreset(dbValues: IntArray) {
@@ -101,13 +103,10 @@ class MainActivity : AppCompatActivity() {
             val seekBand = bandViews[i].findViewById<SeekBar>(R.id.seek_band)
             seekBand.progress = progress
 
-            try {
-                equalizer?.setBandLevel(i.toShort(), (db * 100).toShort())
-                val intent = Intent(this, EqService::class.java)
-                intent.putExtra("band", i)
-                intent.putExtra("level", (db * 100))
-                startService(intent)
-            } catch (e: Exception) { }
+            val intent = Intent(this, EqService::class.java)
+            intent.putExtra("band", i)
+            intent.putExtra("level", (db * 100))
+            startService(intent)
         }
     }
 
@@ -122,23 +121,14 @@ class MainActivity : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 val db = progress - 15
                 txtDb.text = "${db}dB"
-                try {
-                    equalizer?.setBandLevel(bandIndex.toShort(), (db * 100).toShort())
 
-                    val intent = Intent(this@MainActivity, EqService::class.java)
-                    intent.putExtra("band", bandIndex)
-                    intent.putExtra("level", (db * 100))
-                    startService(intent)
-
-                } catch (e: Exception) { }
+                val intent = Intent(this@MainActivity, EqService::class.java)
+                intent.putExtra("band", bandIndex)
+                intent.putExtra("level", (db * 100))
+                startService(intent)
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-    }
-
-    override fun onDestroy() {
-        equalizer?.release()
-        super.onDestroy()
     }
 }

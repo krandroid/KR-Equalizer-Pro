@@ -31,48 +31,47 @@
             android:scrollbars="none"
             android:layout_marginBottom="24dp">
             <LinearLayout
-                android:id="@+id/layout_presets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center">
-                
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_flat"
-                    style="@style/ChipGold"
-                    android:layout_marginEnd="8dp"
-                    android:text="Flat"/>
-                    
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_bass"
-                    style="@style/ChipGold"
-                    android:layout_marginEnd="8dp"
-                    android:text="Bass"/>
-                    
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_full_bass"
-                    style="@style/ChipGold"
-                    android:layout_marginEnd="8dp"
-                    android:text="Full Bass"/>
-                    
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_bass_treble"
-                    style="@style/ChipGold"
-                    android:layout_marginEnd="8dp"
-                    android:text="Bass Treble"/>
-                    
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_vocal"
-                    style="@style/ChipGold"
-                    android:layout_marginEnd="8dp"
-                    android:text="Vocal"/>
-                    
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_headphones"
-                    style="@style/ChipGold"
-                    android:layout_marginEnd="8dp"
-                    android:text="Headphones"/>
-                    
+
+                <Button
+                    android:id="@+id/btn_flat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Flat"
+                    android:textColor="@color/gold"
+                    android:backgroundTint="@color/bg_card"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btn_bass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Bass"
+                    android:textColor="@color/gold"
+                    android:backgroundTint="@color/bg_card"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btn_full_bass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Full Bass"
+                    android:textColor="@color/gold"
+                    android:backgroundTint="@color/bg_card"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btn_bass_treble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Bass Treble"
+                    android:textColor="@color/gold"
+                    android:backgroundTint="@color/bg_card"
+                    android:layout_marginEnd="8dp"/>
+
             </LinearLayout>
         </HorizontalScrollView>
 
