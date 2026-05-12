@@ -1,3 +1,7 @@
 <resources>
+    <style name="Theme.AppCompat.Light.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/bg_black</item>
+        <item name="android:colorBackground">@color/bg_black</item>
+    </style>
     <style name="Theme.Leanback" parent="androidx.leanback.theme.Leanback"/>
 </resources>
