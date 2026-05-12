@@ -1,11 +1,9 @@
 package com.kr.eqpro
 
 import android.content.Intent
-import android.media.audiofx.AudioEffect
 import android.os.Bundle
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 
@@ -15,18 +13,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sessionId = intent.getIntExtra(AudioEffect.EXTRA_AUDIO_SESSION, 0)
-        if (sessionId!= 0 && EqService.eqInstance == null) {
-            val svc = Intent(this, EqService::class.java)
-            svc.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, sessionId)
-            startForegroundService(svc)
-        }
-
-        if (EqService.eqInstance == null && sessionId == 0) {
-            Toast.makeText(this, "Buka lewat SmartTube: Audio > Equalizer", Toast.LENGTH_LONG).show()
-            finish()
-            return
-        }
+        // LANGSUNG START GLOBAL EQ
+        startForegroundService(Intent(this, EqService::class.java))
 
         setupBand(R.id.seek_60, R.id.db_60, 0)
         setupBand(R.id.seek_230, R.id.db_230, 1)
@@ -40,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupPresets() {
-        findViewById<Chip>(R.id.chip_flat).setOnClickListener { sendPreset(0,0,0,0,0) }
+        findViewById<Chip>(R.id.chip_flat).setOnClickListener { sendPreset(0,0,0) }
         findViewById<Chip>(R.id.chip_bass).setOnClickListener { sendPreset(8,6,0,-2,-4) }
         findViewById<Chip>(R.id.chip_full_bass).setOnClickListener { sendPreset(12,9,3,0,-3) }
         findViewById<Chip>(R.id.chip_bass_treble).setOnClickListener { sendPreset(7,3,0,3,7) }
@@ -89,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<SeekBar>(R.id.seek_910).progress = db[2] + 15
         findViewById<SeekBar>(R.id.seek_3k6).progress = db[3] + 15
         findViewById<SeekBar>(R.id.seek_14k).progress = db[4] + 15
-        
+
         findViewById<TextView>(R.id.db_60).text = "${db[0]}dB"
         findViewById<TextView>(R.id.db_230).text = "${db[1]}dB"
         findViewById<TextView>(R.id.db_910).text = "${db[2]}dB"
