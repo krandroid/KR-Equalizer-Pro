@@ -1,6 +1,8 @@
 package com.kr.eqpro
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.audiofx.Equalizer
 import android.os.Build
 import android.os.Bundle
@@ -8,7 +10,10 @@ import android.view.View
 import android.widget.SeekBar
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.material.chip.Chip
 
 class MainActivity : AppCompatActivity() {
@@ -20,17 +25,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_eq)
 
-        val serviceIntent = Intent(this, EqService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(serviceIntent)
-        } else {
-            startService(serviceIntent)
+        // Minta permission notifikasi Android 13+
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+               != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
+            }
         }
 
+        // Cek Equalizer support, kalo gagal jangan crash
         try {
             equalizer = Equalizer(0, 0)
             equalizer?.enabled = true
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+            Toast.makeText(this, "HP ini block Global EQ. Coba pake app musik internal.", Toast.LENGTH_LONG).show()
+            e.printStackTrace()
+        }
+
+        // Start service cuma kalo Equalizer berhasil
+        if (equalizer!= null) {
+            val serviceIntent = Intent(this, EqService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent)
+            } else {
+                startService(serviceIntent)
+            }
+        }
 
         bandViews.add(findViewById(R.id.band_60))
         bandViews.add(findViewById(R.id.band_230))
