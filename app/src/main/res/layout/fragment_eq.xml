@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0D0D0D"
+    android:orientation="vertical"
+    android:padding="48dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="KR Equalizer Pro"
+        android:textColor="#FFD700"
+        android:textSize="32sp"
+        android:layout_marginBottom="24dp" />
+    <Switch
+        android:id="@+id/switch_dolby"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:text="Dolby Spread Mode"
+        android:textColor="#FFD700"
+        android:thumbTint="#FFD700" />
+    <LinearLayout
+        android:id="@+id/layout_spread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="8dp">
+        <TextView
+            android:id="@+id/txt_spread"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Spread: 80%"
+            android:textColor="#FFD700" />
+        <SeekBar
+            android:id="@+id/seek_spread"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="100"
+            android:progress="80"
+            android:progressTint="#FFD700"
+            android:thumbTint="#FFD700" />
+    </LinearLayout>
+</LinearLayout>
