@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupPresets() {
-        findViewById<Chip>(R.id.chip_flat).setOnClickListener { sendPreset(0,0,0) }
+        findViewById<Chip>(R.id.chip_flat).setOnClickListener { sendPreset(0,0,0,0,0) }
         findViewById<Chip>(R.id.chip_bass).setOnClickListener { sendPreset(8,6,0,-2,-4) }
         findViewById<Chip>(R.id.chip_full_bass).setOnClickListener { sendPreset(12,9,3,0,-3) }
         findViewById<Chip>(R.id.chip_bass_treble).setOnClickListener { sendPreset(7,3,0,3,7) }
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<SeekBar>(R.id.seek_910).progress = db[2] + 15
         findViewById<SeekBar>(R.id.seek_3k6).progress = db[3] + 15
         findViewById<SeekBar>(R.id.seek_14k).progress = db[4] + 15
-
+        
         findViewById<TextView>(R.id.db_60).text = "${db[0]}dB"
         findViewById<TextView>(R.id.db_230).text = "${db[1]}dB"
         findViewById<TextView>(R.id.db_910).text = "${db[2]}dB"
